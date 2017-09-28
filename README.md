@@ -1,10 +1,12 @@
 # Web Crawler using Python Scrapy
 ## Introduction
-We use Python Scrapy to crawl users' information (project in folder chictopia1) and images (project in folder chictopia2) on website [Chictopia](http://www.chictopia.com/)
+  We use Python Scrapy to crawl users' information (project in folder chictopia1) and images (project in folder chictopia2) on website [Chictopia](http://www.chictopia.com/)
+  
 The codes run successfully on Windows 10. 
 ## Requirements
 - Python3
 - Scrapy
+
 **note: we recommend installing [Anaconda3](https://www.anaconda.com/download/) and use *conda install scrapy* to install Scrapy.**
 ## Usage
 Execute (double-click) file *start.bat* on Windows.
