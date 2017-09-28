@@ -14,7 +14,7 @@ Execute (double-click) file *start.bat* on Windows.
 ## Details (How to create a Web Crawler project?——Project chictopia1 for example)
 #### 1. open *cmd* window
 #### 2. input command ```scrapy startproject lifesjules``` to create a web crawler project folder
-#### 3. write *items.py* and create a new file *spider.py* (as for some complex projects, you may need to rewrite *pipelines.py*)
+#### 3. write *items.py* and create a new file *chictopia1_spider.py* in folder *spiders* (as for some complex projects, you may need to rewrite *pipelines.py*)
 
 **items.py**
 ```python
@@ -28,7 +28,7 @@ Execute (double-click) file *start.bat* on Windows.
 import scrapy
 
 
-class LifesjulesItem(scrapy.Item):
+class Chictopia1Item(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     name = scrapy.Field()
@@ -37,55 +37,38 @@ class LifesjulesItem(scrapy.Item):
     following = scrapy.Field()
     followers = scrapy.Field()
     entry_url = scrapy.Field()
-    link = scrapy.Field()
-    favlink = scrapy.Field()
 ```
 
-**spider.py**
+**chictopia1_spider.py**
 ```python
 import scrapy
 
-from lifesjules.items import LifesjulesItem
+from chictopia1.items import Chictopia1Item
+
+URL_BASE = 'http://www.chictopia.com'
 
 
-class LifesjulseSpider(scrapy.Spider):
-    name = "lifesjules"
+class Chictopia1Spider(scrapy.Spider):
+    name = "chictopia1"
     allowed_domains = ["chictopia.com"]
 
-    def start_requests(self):
-        start_urls = ['http://www.chictopia.com/lifesjules',
-                      'http://www.chictopia.com/user/fave_photos/lifesjules'
-                      ]
-        yield scrapy.Request(url=str(start_urls[0]), callback=self.parse_user)
+    def __init__(self, user=None, *args, **kwargs):
+        super(Chictopia1Spider, self).__init__(*args, **kwargs)
+        self.start_urls = ["http://www.chictopia.com/%s" % (user)]
 
-        reqs = []
-
-        for i in range(1, 8):
-            req = str('http://www.chictopia.com/lifesjules/%s' % i)
-            reqs.append(req)
-        for url in reqs:
-            yield scrapy.Request(url=url, callback=self.parse)
-
-        favreqs = []
-
-        for j in range(1, 5):
-            favreq = str(
-                'http://www.chictopia.com/user/fave_photos/lifesjules?page=%s' % j)
-            favreqs.append(favreq)
-        for favurl in favreqs:
-            yield scrapy.Request(url=favurl, callback=self.parse_fav)
-
-    def parse_user(self, response):
+    def parse(self, response):
         sel = scrapy.selector.Selector(response)
         items = []
-        item = LifesjulesItem()
-        item['entry_url'] = 'http://www.chictopia.com/lifesjules'
+        item = Chictopia1Item()
+        entry_url_0 = str(
+            sel.xpath('//div[@class="left pagination"]/a/@href')[0].extract().strip())
+        entry_url_1 = entry_url_0.strip('/2')
+
+        item['entry_url'] = URL_BASE + '/' + entry_url_1
         item['name'] = sel.xpath(
-            '//div[@itemprop="name"]/text()')[0].extract().strip() #加[0]后返回list下第一个元素，strip()过滤空格，换行符等
+            '//div[@itemprop="name"]/text()')[0].extract().strip()
         item['desc'] = sel.xpath(
-            '//div[@class="px10 ullink"]/p[1]/text()')[0].extract().strip() + sel.xpath(
-            '//div[@class="px10 ullink"]/p[2]/text()')[0].extract().strip() + sel.xpath(
-            '//div[@class="px10 ullink"]/p[3]/text()')[0].extract().strip()
+            '//div[@class="px10 ullink"]/p/text()').extract()
         item['friends'] = sel.xpath(
             '//div[@id="friend_count"]/text()')[0].extract().strip()
         item['following'] = sel.xpath(
@@ -93,60 +76,10 @@ class LifesjulseSpider(scrapy.Spider):
         item['followers'] = sel.xpath(
             '//div[@id="follower_count"]/text()')[0].extract().strip()
         items.append(item)
-        return items
-
-    def parse(self, response):
-        url_list = response.xpath(
-            '//div[@id="bodywrapper"]')
-        items = []
-        for url in url_list:
-            item = LifesjulesItem()
-            item['link'] = url.xpath(
-                '//div[@class="bold px12 white lh12 ellipsis"]/a/@href').extract() #没加[0]，返回一个完整的list
-            items.append(item)
 
         return items
 
-    def parse_fav(self, response):
-        url_list = response.xpath(
-            '//div[@id="bodywrapper"]')
-        items = []
-        for url in url_list:
-            item = LifesjulesItem()
-            item['favlink'] = url.xpath(
-                '//div[@class="bold px12 white lh12 ellipsis"]/a/@href').extract()
-            items.append(item)
-
-        return items
 ```
 
-**pipelines.py**
-```python
-# -*- coding: utf-8 -*-
-
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-from scrapy.exporters import JsonItemExporter
-
-
-class LifesjulesPipeline(object):
-	def __init__(self):
-		self.file = open('lifesjules.json', 'wb')
-		self.exporter = JsonItemExporter(
-		   self.file, encoding="utf-8", ensure_ascii=False)
-		self.exporter.start_exporting()
-
-	def close_spider(self, spider):
-		self.exporter.finish_exporting()
-		self.file.close()
-
-    def process_item(self, item, spider):
-    	self.exporter.export_item(item)
-        return item
-```
 #### 4. run our web crawler and save data to a *.json* file
 open *cmd* window in project folder, and input command ```scrapy crawl lifesjules -o lifesjules.json -t json```
