@@ -7,14 +7,14 @@ The codes run successfully on Windows 10.
 - Python3
 - Scrapy
 
-**note: we recommend installing [Anaconda3](https://www.anaconda.com/download/) and use *conda install scrapy* to install Scrapy.**
+**note: we recommend installing [Anaconda3](https://www.anaconda.com/download/) and using command ```conda install scrapy``` to install Scrapy.**
 ## Usage
 Execute (double-click) file *start.bat* on Windows.
 
 ## Details (How to create a Web Crawler project?——Project chictopia1 for example)
 #### 1. open *cmd* window
-#### 2. input command ```scrapy startproject lifesjules```to create a web crawler project folder
-#### 3. write *item.py* and create a new file *spider.py* (as for some complex projects, you may need to rewrite *pipelines.py*)
+#### 2. input command ```scrapy startproject lifesjules``` to create a web crawler project folder
+#### 3. write *items.py* and create a new file *spider.py* (as for some complex projects, you may need to rewrite *pipelines.py*)
 
 **items.py**
 ```python
