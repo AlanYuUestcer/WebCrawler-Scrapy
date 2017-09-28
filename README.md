@@ -11,10 +11,11 @@ The codes run successfully on Windows 10.
 ## Usage
 Execute (double-click) file *start.bat* on Windows.
 
-## Details (How to create a Web Crawler project?————Project chictopia1 for example)
-1. open *cmd* window
-2. input command ```scrapy startproject lifesjules```to create a web crawler project folder
-3. write *item.py* and create a new file *spider.py* (as for some complex projects, you may need to rewrite *pipelines.py*)
+## Details (How to create a Web Crawler project?——Project chictopia1 for example)
+#### 1. open *cmd* window
+#### 2. input command ```scrapy startproject lifesjules```to create a web crawler project folder
+#### 3. write *item.py* and create a new file *spider.py* (as for some complex projects, you may need to rewrite *pipelines.py*)
+
 **items.py**
 ```python
 # -*- coding: utf-8 -*-
@@ -39,6 +40,7 @@ class LifesjulesItem(scrapy.Item):
     link = scrapy.Field()
     favlink = scrapy.Field()
 ```
+
 **spider.py**
 ```python
 import scrapy
@@ -117,6 +119,7 @@ class LifesjulseSpider(scrapy.Spider):
 
         return items
 ```
+
 **pipelines.py**
 ```python
 # -*- coding: utf-8 -*-
@@ -145,5 +148,5 @@ class LifesjulesPipeline(object):
     	self.exporter.export_item(item)
         return item
 ```
-4. run our web crawler and save data to a *.json* file
+#### 4. run our web crawler and save data to a *.json* file
 open *cmd* window in project folder, and input command ```scrapy crawl lifesjules -o lifesjules.json -t json```
