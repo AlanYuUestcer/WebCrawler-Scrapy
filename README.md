@@ -1,6 +1,6 @@
 # Web Crawler using Python Scrapy
 ## Introduction
-  We use Python Scrapy to crawl users' information (project in folder chictopia1) and images (project in folder chictopia2) on website [Chictopia](http://www.chictopia.com/)
+  We use Python Scrapy to crawl users' information (project in folder chictopia1) and images (project in folder chictopia2) on website [Chictopia](http://www.chictopia.com/).
   
 The codes run successfully on Windows 10. 
 ## Requirements
