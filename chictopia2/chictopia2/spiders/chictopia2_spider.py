@@ -2,7 +2,7 @@ import scrapy
 
 from chictopia2.items import Chictopia2Item
 
-MAX_PAGE = 31  # 爬取页面数（30页，range(1,MAX_PAGE)为左闭右开区间）
+MAX_PAGE = 31  # 爬取页面数(30)
 URL_BASE = 'http://www.chictopia.com'
 
 
