@@ -13,7 +13,7 @@ Execute (double-click) file *start.bat* on Windows.
 
 ## Details (How to create a Web Crawler project?——Project chictopia1 for example)
 #### 1. open *cmd* window
-#### 2. run command ```scrapy startproject lifesjules``` to create a web crawler project folder
+#### 2. run command ```scrapy startproject chictopia1``` to create a web crawler project folder
 #### 3. write *items.py* and create a new file *chictopia1_spider.py* in folder *spiders* (as for some complex projects, you may need to rewrite *pipelines.py*)
 
 **items.py**
@@ -82,4 +82,4 @@ class Chictopia1Spider(scrapy.Spider):
 ```
 
 #### 4. run our web crawler and save data to a *.json* file
-open *cmd* window in project folder, and run command ```scrapy crawl lifesjules -o lifesjules.json -t json```
+open *cmd* window in project folder, and run command ```scrapy crawl chictopia1 -o chictopia1.json -t json```
